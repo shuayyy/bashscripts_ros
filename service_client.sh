@@ -118,7 +118,7 @@ EOL
 cat <<EOL > setup.py
 from setuptools import find_packages, setup
 
-package_name = 'my_servicepkg'
+package_name = '$WORKSPACE_NAME'
 
 setup(
     name=package_name,
@@ -146,6 +146,35 @@ setup(
 
 EOL
 
+cat <<EOL> package.xml
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name> $WORKSPACE_NAME </name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="gopi@todo.todo">gopi</maintainer>
+  <license>TODO: License declaration</license>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>example_interfaces</depend>
+
+  
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
+
+EOL
+
 # Go back to the workspace root and build the package
 cd ../..
 colcon build || { echo "Failed to build workspace"; exit 1; }
@@ -158,4 +187,3 @@ else
 fi
 
 echo "ROS 2 Client is served with service"
-
